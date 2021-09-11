@@ -1,18 +1,14 @@
 package com.vm.shorturl.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDate;
 
 @Entity
 public class ShortUrl {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     private String longURL;
+    @Id
     private String shortURL;
     private LocalDate createdTime;
 

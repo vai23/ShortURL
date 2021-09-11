@@ -3,6 +3,7 @@ package com.vm.shorturl.service.impl;
 import com.google.common.hash.Hashing;
 import com.vm.shorturl.controller.dto.NewUrl;
 import com.vm.shorturl.exception.InvalidUrlException;
+import com.vm.shorturl.exception.UrlNotFoundException;
 import com.vm.shorturl.model.ShortUrl;
 import com.vm.shorturl.repository.ShortUrlRepository;
 import com.vm.shorturl.service.ShortUrlService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.Charset;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class ShortUrlServiceImpl implements ShortUrlService {
@@ -50,7 +52,14 @@ public class ShortUrlServiceImpl implements ShortUrlService {
     }
 
     @Override
-    public NewUrl getLongUrl(NewUrl url) {
-        return null;
+    public NewUrl getLongUrl(NewUrl shortUrl) throws UrlNotFoundException {
+
+        Optional<ShortUrl> longUrl = shortUrlRepository.findById(shortUrl.getUrl());
+
+        if (longUrl.isEmpty()) {
+            throw new UrlNotFoundException(longUrl + " does not exist");
+        }
+
+        return new NewUrl(longUrl.get().getLongURL());
     }
 }
