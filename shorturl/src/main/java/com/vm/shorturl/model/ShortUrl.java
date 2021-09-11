@@ -1,15 +1,20 @@
 package com.vm.shorturl.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
 
 @Entity
 public class ShortUrl {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String longURL;
     private String shortURL;
+    private LocalDate createdTime;
 
     public ShortUrl() {
     }
@@ -33,5 +38,22 @@ public class ShortUrl {
 
     public void setShortURL(String shortURL) {
         this.shortURL = shortURL;
+    }
+
+    public LocalDate getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(LocalDate createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    @Override
+    public String toString() {
+        return "ShortUrl{" +
+                ", longURL='" + longURL + '\'' +
+                ", shortURL='" + shortURL + '\'' +
+                ", createdTime=" + createdTime +
+                '}';
     }
 }

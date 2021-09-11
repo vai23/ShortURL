@@ -1,17 +1,27 @@
 package com.vm.shorturl.controller.dto;
 
 public class NewUrl {
-    private String longUrl;
+    private String url;
 
-    public NewUrl(String longUrl) {
-        this.longUrl = longUrl;
+    public NewUrl() {
     }
 
-    public String getLongUrl() {
-        return longUrl;
+    public NewUrl(String url) {
+        this.url = url;
     }
 
-    public void setLongUrl(String longUrl) {
-        this.longUrl = longUrl;
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    @Override
+    public String toString() {
+        return "NewUrl{" +
+                "url='" + url + '\'' +
+                '}';
     }
 }
