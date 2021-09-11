@@ -9,5 +9,3 @@ services:
       MYSQL_DATABASE: short_url_db
     ports:
       - "8090:3306"
-    volumes:
-      - ./setup-sql:/var/lib/mysql
