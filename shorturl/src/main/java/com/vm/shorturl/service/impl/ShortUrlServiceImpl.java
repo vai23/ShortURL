@@ -8,9 +8,6 @@ import com.vm.shorturl.model.ShortUrl;
 import com.vm.shorturl.repository.ShortUrlRepository;
 import com.vm.shorturl.service.ShortUrlService;
 import org.apache.commons.validator.routines.UrlValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.Charset;
@@ -54,11 +51,8 @@ public class ShortUrlServiceImpl implements ShortUrlService {
     @Override
     public NewUrl getLongUrl(NewUrl shortUrl) throws UrlNotFoundException {
 
-        Optional<ShortUrl> longUrl = shortUrlRepository.findById(shortUrl.getUrl());
-
-        if (longUrl.isEmpty()) {
-            throw new UrlNotFoundException(longUrl + " does not exist");
-        }
+        Optional<ShortUrl> longUrl = Optional.ofNullable(shortUrlRepository.findById(shortUrl.getUrl()).orElseThrow(() ->
+                new UrlNotFoundException(shortUrl + " does not exist")));
 
         return new NewUrl(longUrl.get().getLongURL());
     }

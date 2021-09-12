@@ -6,6 +6,8 @@ import com.vm.shorturl.exception.UrlNotFoundException;
 import com.vm.shorturl.service.impl.ShortUrlServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,7 +23,7 @@ public class ShortUrlController {
     }
 
     @PostMapping("shorten")
-    public NewUrl shorten(@RequestBody NewUrl url) {
+    public ResponseEntity<NewUrl> shorten(@RequestBody NewUrl url) {
 
         logger.info("Received Url to shorten : " + url);
 
@@ -31,15 +33,16 @@ public class ShortUrlController {
             shortUrl = shortUrlService.getShortUrl(url);
         } catch (InvalidUrlException invalidUrlException) {
             logger.error(invalidUrlException.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
         logger.info("Generated short url : " + shortUrl);
 
-        return shortUrl;
+        return ResponseEntity.status(HttpStatus.CREATED).body(shortUrl);
     }
 
     @GetMapping("{key}")
-    public NewUrl getLongUrl(@PathVariable String key) {
+    public ResponseEntity<NewUrl> getLongUrl(@PathVariable String key) {
 
         logger.info("Got key : " + key);
 
@@ -49,10 +52,11 @@ public class ShortUrlController {
             longUrl = shortUrlService.getLongUrl(new NewUrl(key));
         } catch (UrlNotFoundException urlNotFoundException) {
             logger.error(urlNotFoundException.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
         logger.info("Got long url from key : " + longUrl);
 
-        return longUrl;
+        return ResponseEntity.status(HttpStatus.FOUND).body(longUrl);
     }
 }
