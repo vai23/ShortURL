@@ -1,7 +1,7 @@
 version: '3.1'
 
 services:
-  db:
+  mysql_db:
     image: mysql
     restart: always
     environment:
@@ -9,3 +9,13 @@ services:
       MYSQL_DATABASE: short_url_db
     ports:
       - "8090:3306"
+
+  app:
+    build: ./shorturl
+    #restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_APPLICATION_NAME: short-url-service
+    depends_on:
+      - mysql_db
